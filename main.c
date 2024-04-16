@@ -27,11 +27,8 @@ int main(void) {
       case KEY_RIGHT:
         handle_keypress('r');
         break;
-        // Add additional cases for other keys if needed
       }
     }
-
-    // handle io
 
     // game logic
     render_board();
