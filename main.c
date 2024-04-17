@@ -2,7 +2,16 @@
 #include "csnake.h"
 #include "ncurses.h"
 #include "stdio.h"
+#include <stdlib.h>
 #include <unistd.h> // for usleep()
+
+int *initialize() {
+  // initialize positional array
+  int *pos;
+  pos = (int *)malloc(10 * sizeof(int));
+
+  return pos;
+}
 
 int main(void) {
   int ch;
@@ -10,6 +19,8 @@ int main(void) {
   initscr();
   keypad(stdscr, TRUE);
   timeout(0); // Set non-blocking input mode
+
+  int *pos = initialize();
 
   while ((ch = getch()) != 'q') {
 
