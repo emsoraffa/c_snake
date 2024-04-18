@@ -1,5 +1,5 @@
 from collections import OrderedDict
-# TODO:use collections?
+# TODO:use collections? improve performance?
 
 
 class Permissions:
@@ -40,27 +40,29 @@ class Graph:
                     print("%7d\t" % (1), end=" ")
                 else:
                     print("%7d\t" % (reach[i][j]), end=" ")
+            print()
 
-    def transitiveClosure(self, graph, permissions):
+    def compute_permissions(self, graph, permissions):
         reach = [i[:] for i in graph]
+        index_array = permissions.get_index_array()
+
         for k in range(self.V):
             for i in range(self.V):
                 for j in range(self.V):
                     reach[i][j] = reach[i][j] or (reach[i][k] and reach[k][j])
+                    if reach[i][j] == 1:
+                        permissions.set(
+                            index_array[j],
+                            permissions.get(j) + permissions[index_array[i]],
+                        )
 
         self.printAdjMatrix(reach)
         print("")
 
-        for i, key in enumerate(permissions.get_index_array()):
-            for j in range(self.V):
-                if reach[i][j] == 1:
-                    permissions.set(
-                        permissions.get_index_array()[j],
-                        permissions.get(j) + permissions[key],
-                    )
-
         permissions.clean()
         print(permissions)
+
+        return permissions
 
 
 g = Graph(5)
@@ -82,4 +84,4 @@ p = Permissions(
         "Baltazar": "E",
     }
 )
-g.transitiveClosure(graph, p)
+g.compute_permissions(graph, p)
