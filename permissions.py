@@ -29,6 +29,7 @@ class Permissions:
 
 
 class Graph:
+    # TODO: use sets instead of lists.
     def __init__(self, vertices):
         self.V = vertices
 
