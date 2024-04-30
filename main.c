@@ -1,16 +1,27 @@
-
 #include "csnake.h"
 #include "ncurses.h"
 #include "stdio.h"
 #include <stdlib.h>
 #include <unistd.h> // for usleep()
 
-int *initialize() {
-  // initialize positional array
-  int *pos;
-  pos = (int *)malloc(10 * sizeof(int));
+typedef struct {
+  float *pos;
+  int board[64][64];
+} gamestate;
 
-  return pos;
+gamestate initialize() {
+  // initialize positional array
+  float *pos = (float *)malloc(10 * sizeof(float));
+
+  gamestate init;
+
+  for (int i = 0; i < 64; i++) {
+    for (int j = 0; i < 64; j++) {
+      init.board[i][j] = 0;
+    }
+  }
+  init.pos = pos;
+  return init;
 }
 
 int main(void) {
@@ -20,7 +31,7 @@ int main(void) {
   keypad(stdscr, TRUE);
   timeout(0); // Set non-blocking input mode
 
-  int *pos = initialize();
+  gamestate init = initialize();
 
   while ((ch = getch()) != 'q') {
 
@@ -49,6 +60,7 @@ int main(void) {
     clear();
   }
 
+  free(init.pos);
   endwin();
   return 0;
 }
